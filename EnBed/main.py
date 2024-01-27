@@ -1,18 +1,24 @@
 from processText import processChunks as pc
-from extract import extractAndCleanText as ect
+from extract import extractText as ext
 from processText import splitWithOverlap as swo
 from export import writeFileTXT as wf
+from processText import cleanText as clt
 
 import os
 
-PDF_PATH = '/your/pdf/path.pdf'
+PDF_PATH = '/Users/jdo/Library/CloudStorage/OneDrive-Personal/ASU Courses/CSE 230/Computer Organization and Design.pdf'
 API_KEY = os.environ.get("OPENAI_API_KEY")
+OUTPUT_FILE_PATH = '/Users/jdo/Downloads/Computer Organization and Design.txt'
 
 def main():
-    clean_text = ect(PDF_PATH)
-    chunks_dict = swo(clean_text, 40, 2400)
+    text = clt(ext(PDF_PATH))
+    print(text[0:10000])
+    chunks_dict = swo(text, 40, 2400)
     processed_text = pc(chunks_dict, API_KEY)
-    wf(processed_text)
+    wf(OUTPUT_FILE_PATH = processed_text)
+    print(processed_text[0:10000])
+    print(f"File written to {OUTPUT_FILE_PATH}")
+    print(f"Number of chunks: {len(chunks_dict)}")
     return
 
 

@@ -1,0 +1,3 @@
+[submodule "EnBed/submodule/submodule/pinecone-io/examples"]
+	path = EnBed/submodule/submodule/pinecone-io/examples
+	url = https://github.com/pinecone-io/examples.git
