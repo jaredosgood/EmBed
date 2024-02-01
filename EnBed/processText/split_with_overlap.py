@@ -1,3 +1,5 @@
+
+
 def split_with_overlap(text_tokens, num_chunks, overlap):
     """
     Splits the text tokens into specified number of chunks with specified overlap with adjacent chunks
@@ -9,7 +11,7 @@ def split_with_overlap(text_tokens, num_chunks, overlap):
     :return: Dictionary with keys as 'chunk_##' and values as chunks (each chunk is a list of tokens)
     """
     total_length = len(text_tokens)
-    base_chunk_size = total_length // num_chunks
+    # base_chunk_size = total_length // num_chunks
     overlap_total = (num_chunks - 1) * overlap * 2  # Overlap for both sides for all but first and last chunk
     adjusted_chunk_size_with_overlap = (total_length + overlap_total) // num_chunks
 

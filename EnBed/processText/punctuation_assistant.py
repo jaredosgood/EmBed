@@ -1,16 +1,21 @@
 import os
 import openai
+from EnBed.logging_config import setup_logging
+import logging
 
+
+setup_logging()
+logger = logging.getLogger('my_application')
 client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-def punctuation_assistant(punctuated_transcripts):
+def punctuation_assistant(raw_text):
 
     system_prompt = """You are a helpful assistant that adds punctuation to text and code in a textbook.
     Preserve the original words and only insert necessary punctuation such as periods, commas, capialization,
     symbols like dollar sings or percentage signs, backtick to format a small piece of code within a line of text,
     triple backticks for larger snippets of code that should be displayed as a separate block, and formatting
-    consistent with the constraints of a '.txt' file. Preserve page numbers and format them as '<<<Page {#}>>>\n'.
+    consistent with the constraints of a '.txt' file. Preserve page numbers and format them as '\n<<<Page {#}>>>\n'.
     Remove unnecessary spacing, given that this information will be embedded and stored in a vector database.
-    Use only the context provided. If there is no context provided say, 'No context provided'\n"""
+    Use only the context provided."""
     response = client.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         temperature=0,
@@ -21,8 +26,10 @@ def punctuation_assistant(punctuated_transcripts):
             },
             {
                 "role": "user",
-                "content": punctuated_transcripts
+                "content": raw_text
             }
         ]
     )
-    return response
+    string_response = str(response)
+    logger.info(f"Response from 'punctuation_assistant': {string_response}[:1000]")
+    return string_response
