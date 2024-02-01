@@ -9,7 +9,11 @@ logger = logging.getLogger('my_application')
 client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 def punctuation_assistant(raw_text):
 
-    system_prompt = """You are a helpful assistant that adds punctuation to text and code in a textbook.
+    system_prompt = """You are a helpful assistant that corrects text and code extracted from a textbook.
+    You have the following tasks:
+    (1) Remove misplaced spaces within words. For example, the word "soft ware" should be "software".
+    (2) Replace double or triple spaces with single spaces. For example, "off  the" should be "off the".
+    (3) Alter line endings so that 
     Preserve the original words and only insert necessary punctuation such as periods, commas, capialization,
     symbols like dollar sings or percentage signs, backtick to format a small piece of code within a line of text,
     triple backticks for larger snippets of code that should be displayed as a separate block, and formatting
