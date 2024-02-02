@@ -1,4 +1,4 @@
-from EnBed.db_functions.df_to_sqlite3 import find_last_processed_page, create_or_update_entry
+from EnBed.db_functions.db_ops import find_last_processed_page, create_or_update_entry
 from EnBed.process_text.punctuation_assistant import punctuation_assistant
 from EnBed.utilities.create_guid import create_guid
 import fitz

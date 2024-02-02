@@ -4,6 +4,7 @@ from EnBed.logging_config import setup_logging
 import logging
 
 
+
 setup_logging()
 logger = logging.getLogger('EnBed.process_text.punctuation_assistant')
 client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -38,7 +39,3 @@ def punctuation_assistant(raw_text):
     string_response = str(response.choices[0].message.content)
     logger.info(f"Response from 'punctuation_assistant': " + (string_response[:1000]))
     return string_response
-
-# # Example usage:
-# text = "The quick br own fox jumps over the la zy do g."
-# formatted_text = punctuation_assistant(text)
