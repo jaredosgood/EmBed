@@ -1,9 +1,9 @@
 import logging
 import os
 from extract.pdf_to_var import pdf_to_var
-from processText.split_with_overlap import split_with_overlap
+from process_text.split_with_overlap import split_with_overlap
 from export.write_to_txt_file import write_to_txt_file
-from processText.processChunks import process_chunks
+from process_text.processChunks import process_chunks
 from EnBed.logging_config import setup_logging
 
 

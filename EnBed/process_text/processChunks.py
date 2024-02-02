@@ -1,5 +1,5 @@
 from datetime import datetime
-from EnBed.processText.punctuation_assistant import punctuation_assistant
+from EnBed.process_text.punctuation_assistant import punctuation_assistant
 from EnBed.logging_config import setup_logging
 import logging
 

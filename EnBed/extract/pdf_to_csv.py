@@ -14,7 +14,10 @@ def extract_text_to_csv(pdf_path, csv_path, additional_columns=None):
                           list should match the number of pages in the PDF.
     """
     doc = fitz.open(pdf_path)  # Open the document.
-    data = {"page_number": [], "page_contents": []}
+    data = {"index": [],
+            "id": [],
+            "page_number": [],
+            "page_contents": []}
 
     # Add additional columns if provided
     if additional_columns:

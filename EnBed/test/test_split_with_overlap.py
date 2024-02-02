@@ -1,4 +1,4 @@
-from EnBed.processText.split_with_overlap import split_with_overlap
+from EnBed.process_text.split_with_overlap import split_with_overlap
 from EnBed.logging_config import setup_logging
 import logging
 import os
