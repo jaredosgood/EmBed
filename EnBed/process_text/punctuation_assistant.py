@@ -22,7 +22,8 @@ def punctuation_assistant(raw_text):
     (7) Preserve page numbers and format them as '\n<<<Page {#}>>>\n'.
     (8) Use only the context provided."""
     response = client.chat.completions.create(
-        model="gpt-4-0125-preview",
+        # model="gpt-4",
+        model="gpt-4-1106-preview",
         # model="gpt-3.5-turbo-0125",
         temperature=0,
         messages=[
