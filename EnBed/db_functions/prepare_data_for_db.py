@@ -6,7 +6,10 @@ from EnBed.utilities.constants import DB_PATH, TABLE_NAME, AUTHOR, BOOK_TITLE, P
 from EnBed.utilities.create_guid import create_guid
 from EnBed.logging_config import setup_logging
 from EnBed.process_text.summarize_textbook_pages_assistant import summarize_textbook_pages_assistant
+from EnBed.process_text.get_embedddings import get_embeddings
 import logging
+from concurrent.futures import ThreadPoolExecutor
+
 
 db_path = DB_PATH
 table_name = TABLE_NAME
@@ -14,10 +17,12 @@ author = AUTHOR
 book_title = BOOK_TITLE
 pdf_path = PDF_PATH
 
+# Set up logging
 setup_logging()
 logger = logging.getLogger('EnBed.export.pdf_to_df')
 
 
+# This function gets the text from the page.
 def get_text_from_page(doc, start_idx, end_idx):
     text_from_page = ""
     for i in range(start_idx, min(end_idx, len(doc))):
@@ -41,21 +46,28 @@ def prepare_data_for_db():
 
             # Get the text from the page.
             text = get_text_from_page(doc, start_idx, end_idx)
+            logger.info(f"Text from page {start_idx} to {end_idx}:\n{text[:100]}")
 
-            # Log the first 1000 characters of the extracted text.
-            logger.info(f"Text from page {start_idx} to {end_idx}:\n{text[:1000]}")
-
-            # Format the extracted text by removing unnecessary punctuations.
+            # Format the extracted text.
             formatted_text = punctuation_assistant(text)
+            logger.info(f"Formatted text from page {start_idx} to {end_idx}")
 
-            # Log the first 1000 characters of the formatted text.
-            logger.info(f"Formatted text from page {start_idx} to {end_idx}:\n{formatted_text[:1000]}")
+            # Create a ThreadPoolExecutor
+            with ThreadPoolExecutor() as executor:
+                # Submit tasks to thread pool
+                future_embeddings = executor.submit(get_embeddings, formatted_text)
+                future_summary = executor.submit(summarize_textbook_pages_assistant, formatted_text)
 
-            # Summarize the formatted text.
-            summary_text = summarize_textbook_pages_assistant(formatted_text)
+                # Collect results as they become available
+                embeddings = future_embeddings.result()
+                logger.info(f"Embeddings of text from page {start_idx} to {end_idx}")
 
-            # Log the first 1000 characters of the summary.
-            logger.info(f"Summary of text from page {start_idx} to {end_idx}:\n{summary_text[:1000]}")
+                summary_text = future_summary.result()
+                logger.info(f"Summary of text from page {start_idx} to {end_idx}")
+
+            # Embed the summary text.
+            summary_embeddings = get_embeddings(summary_text)
+            logger.info(f"Embeddings of summary of text from page {start_idx} to {end_idx}")
 
             target_page = start_idx + 1
             logger.info(f"Target page: {target_page}")
@@ -74,7 +86,9 @@ def prepare_data_for_db():
                              "target_page": target_page,
                              "page_range": page_range,
                              "summary": summary_text,
+                             "summary_embeddings": summary_embeddings,
                              "text": formatted_text,
+                             "embeddings": embeddings,
                              }
 
             # Append the data to the database.
@@ -83,6 +97,3 @@ def prepare_data_for_db():
             # Log the successful operation
             logger.info(f"Appended response to database.")
     return
-
-
-# prepare_data_for_db()
