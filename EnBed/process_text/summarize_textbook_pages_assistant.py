@@ -18,7 +18,7 @@ def summarize_textbook_pages_assistant(punctuated_text):
     (5) Give added relevance to the most important information and information on the second of the three pages.
     (6) Remember to include the most important information from the first and third pages.
     (7) Understand that the summary should be coherent and well-structured.
-    (8) Remember that the textbooks topic is computer organization and design.
+    (8) Remember that the textbooks topic is Algorithm design in Java.
     (8) Examin the text three times before starting to generate the summary."""
     response = client.chat.completions.create(
         model="gpt-3.5-turbo-0125",

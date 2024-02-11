@@ -6,7 +6,7 @@ import logging
 setup_logging()
 logger = logging.getLogger('EnBed.process_text.punctuation_assistant')
 
-RETRY_WAIT_TIME = 300  # 5 minutes
+RETRY_WAIT_TIME = 600  # 5 minutes
 MAX_RETRIES = 3  # maximum number of retries
 
 def retry_on_rate_limit_error(func, *args, **kwargs):

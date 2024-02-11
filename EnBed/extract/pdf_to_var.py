@@ -10,7 +10,7 @@ def pdf_to_var(pdf_path):
     return extracted_text
 
 # Example usage:
-pdf_path = "/Users/jdo/Desktop/Computer Organization and Design.pdf"
+pdf_path = "/Users/jdo/Downloads/EnBed/Algorithms.pdf"
 entire_document_text = pdf_to_var(pdf_path)
 # You can then print the first 1000 characters to check, or manipulate as needed.
 print(entire_document_text[:100000])
