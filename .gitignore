@@ -350,5 +350,10 @@ logs/
 ./logs/
 ./logs/*
 
+EnBed/EnBed/GUI/
+EnBed/EnBed/GUI*
+EnBed/EnBed/GUI/*
+EnBed/EnBed/GUI/*.*
+EnBed/EnBed/GUI/*/*.*
 
 # End of https://www.toptal.com/developers/gitignore/api/python
