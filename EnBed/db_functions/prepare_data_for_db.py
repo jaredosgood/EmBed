@@ -59,36 +59,41 @@ def prepare_data_for_db():
                 future_summary = executor.submit(summarize_textbook_pages_assistant, formatted_text)
 
                 # Collect results as they become available
-                embeddings = future_embeddings.result()
+                embeddings_str = ','.join(map(str, future_embeddings.result()))
                 logger.info(f"Embeddings of text from page {start_idx} to {end_idx}")
 
                 summary_text = future_summary.result()
                 logger.info(f"Summary of text from page {start_idx} to {end_idx}")
 
             # Embed the summary text.
-            summary_embeddings = get_embeddings(summary_text)
+            summary_embeddings_str = ','.join(map(str, get_embeddings(summary_text)))
             logger.info(f"Embeddings of summary of text from page {start_idx} to {end_idx}")
 
+            # Column 2: GUID.
+            guid = create_guid()
+            logger.info(f"GUID created.")
+
+            # Column 5: Target page
             target_page = start_idx + 1
             logger.info(f"Target page: {target_page}")
 
-            # Creating a page range string
+            # Column 6: Page range
             page_range = f"{start_idx},{target_page},{end_idx}"
+            logger.info(f"Page range: {start_idx}, {target_page}, and {end_idx}.")
 
-            # Generate a GUID.
-            guid = create_guid()
-            logger.info(f"GUID: {guid}")
+            # Column 8: Summary Embeddings
 
-            # Prepare the data to be appended to the database.
+
+            # Prepare the data to be added to the database.
             response_data = {"guid": guid,
                              "author": author,
                              "title": book_title,
                              "target_page": target_page,
                              "page_range": page_range,
                              "summary": summary_text,
-                             "summary_embeddings": summary_embeddings,
+                             "summary_embeddings": summary_embeddings_str,
                              "text": formatted_text,
-                             "embeddings": embeddings,
+                             "embeddings": embeddings_str,
                              }
 
             # Append the data to the database.
